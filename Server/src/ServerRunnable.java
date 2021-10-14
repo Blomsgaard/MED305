@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class ServerRunnable implements Runnable{
@@ -21,9 +22,12 @@ public class ServerRunnable implements Runnable{
 
             DataInputStream dataFromUser = new DataInputStream(clientSocket.getInputStream());
             DataOutputStream dataToUser = new DataOutputStream(clientSocket.getOutputStream());
-
+            boolean test = true;
 
             while(connected){
+
+                String name = dataFromUser.readUTF();
+                System.out.println(name);
 
 
                 /*//Stuff happens here that makes the program work

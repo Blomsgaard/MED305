@@ -1,3 +1,5 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +10,7 @@ import java.util.Date;
 
 public class Server {
     private static int port = 6969;
+
 
     public static void main(String[] args) {
 
@@ -21,17 +24,31 @@ public class Server {
                 //Counts the numbers of clients
                 int numberOfClient = 0;
 
+
                 while(true){
-                    Socket connectToCLient = serverSocket.accept();
+                    Socket connectToClient = serverSocket.accept();
                     numberOfClient++;
+                    boolean lobby = false;
 
                     //Displays information about the connected clients
                     System.out.println("Client has connected at:" + new Date() + '\n');
                     System.out.println("Total number of client connected: " + numberOfClient + '\n');
 
-                    new Thread(
-                           new ServerRunnable(connectToCLient, "Multithreaded Server")
-                    ).start();
+                    DataInputStream dataFromUser = new DataInputStream(connectToClient.getInputStream());
+                    DataOutputStream dataToUser = new DataOutputStream(connectToClient.getOutputStream());
+
+                    lobby = dataFromUser.readBoolean();
+
+                    while(lobby) {
+
+                        System.out.println("Lobby has been created");
+
+                        new Thread(
+                                new ServerRunnable(connectToClient, "Multithreaded Server")
+                        ).start();
+
+                    }
+
 
 
                 }
@@ -44,5 +61,6 @@ public class Server {
         }).start();
 
     }
+
 
 }
