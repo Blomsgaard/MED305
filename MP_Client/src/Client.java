@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Client {
 
-    static String host = "localhost";
+    static String host = "192.168.43.6";
     static int port = 6969;
     static DataInputStream in;
     static DataOutputStream out;
@@ -38,9 +38,18 @@ public class Client {
                 out.writeDouble(loanAmount);
 
                  */
-                //out.flush();
+            //out.flush();
 
-           // }
+            // }
+            while(true){
+                String name = input.nextLine();
+                out.writeUTF(name);
+                while(true){
+                    String print = in.readUTF();
+                    System.out.println(print);
+                }
+
+            }
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
