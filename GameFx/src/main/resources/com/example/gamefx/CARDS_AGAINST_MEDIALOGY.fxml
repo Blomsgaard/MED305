@@ -64,7 +64,7 @@
             </LinearGradient>
          </fill>
       </Text>
-      <TextField fx:id="name_textfield" layoutX="193.0" layoutY="309.0" prefHeight="29.0" prefWidth="217.0" style="-fx-background-color: #663399;">
+      <TextField id= "name_textfield" fx:id="name_textfield" layoutX="193.0" layoutY="309.0" prefHeight="29.0" prefWidth="217.0" style="-fx-background-color: #663399;">
          <effect>
             <InnerShadow />
          </effect>

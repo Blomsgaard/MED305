@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Text?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.gamefx.SceneController">
     <padding>
@@ -13,4 +14,5 @@
 
     <Label fx:id="welcomeText"/>
     <Button text="Second Page" onAction="#onButtonClick"/>
+    <Label fx:id="display_name" text="TEMP TEXT"/>
 </VBox>
