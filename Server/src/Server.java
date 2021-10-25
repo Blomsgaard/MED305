@@ -12,12 +12,10 @@ public class Server {
     private static int port = 6969;
     //An arraylist for the users joined and their Threads
     private ArrayList<UserThread> users;
-    //Counts the numbers of clients
-    private int numberOfClient = 0;
 
     //Booleans to handle the different stages of the game
     private boolean connected = true;
-    private boolean lobby = false;
+    private boolean lobby = true;
 
 
     public static void main(String[] args) {
@@ -29,29 +27,23 @@ public class Server {
             try {
                 ServerSocket serverSocket = new ServerSocket(port);
                 System.out.println("Server has started at:" + new Date() + '\n');
+                users = new ArrayList<>();
 
-                while (connected) {
+                while (lobby) {
                     Socket connectToClient = serverSocket.accept();
-                    numberOfClient++;
+
 
                     //Displays information about the connected clients
                     System.out.println("Client has connected at:" + new Date() + '\n');
-                    System.out.println("Total number of client connected: " + numberOfClient + '\n');
 
-                    DataInputStream dataFromUser = new DataInputStream(connectToClient.getInputStream());
-                    DataOutputStream dataToUser = new DataOutputStream(connectToClient.getOutputStream());
+                    UserThread newUser = new UserThread(this, connectToClient);
+                    users.add(newUser);
+                    newUser.start();
 
-                    lobby = dataFromUser.readBoolean();
+                    System.out.println("Total number of client connected: " + users.size() + '\n');
 
-                    while (lobby) {
-                        System.out.println("Lobby has been created");
-
-                        UserThread newUser = new UserThread(connectToClient, "Multithreaded Server");
-                        users.add(newUser);
-
-                        // = dataFromUser.readBoolean();
-
-                    }
+                    //DataInputStream dataFromUser = new DataInputStream(connectToClient.getInputStream());
+                    //DataOutputStream dataToUser = new DataOutputStream(connectToClient.getOutputStream());
 
                 }
 
@@ -60,18 +52,27 @@ public class Server {
                 e.printStackTrace();
             }
 
-        }
+    }
 
+    public ArrayList<UserThread> getUsers() {
+        return users;
+    }
+
+    public void sendToAll(String message){
+        for(int i = 0; i < users.size(); i++){
+            users.get(i).sendMessage(message);
+        }
+    }
 
     public void startGame(){
+        boolean lobby = false;
         boolean start = true;
 
         if(start){
 
-            for(UserThread userThread : users){
-                    userThread.sendMessage("Game has started!");
-            }
-            new Thread(new HandleAGame()).start();
+            sendToAll("Game has started!");
+
+            new Thread(new HandleAGame(this)).start();
 
         }
     }

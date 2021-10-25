@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-public class UserThread implements Runnable{
+public class UserThread extends Thread{
     private Socket clientSocket = null;
     private String serverText = "";
+    private Server server;
     private DataInputStream dataFromUser;
     private DataOutputStream dataToUser;
+    private boolean startCheck;
 
     //Constructor for the class
-    public UserThread(Socket clientSocket, String serverText){
+    public UserThread(Server server, Socket clientSocket){
         this.clientSocket = clientSocket;
-        this.serverText = serverText;
+        this.server = server;
     }
 
     @Override
@@ -21,15 +23,29 @@ public class UserThread implements Runnable{
         try{
             //System.out.println("A client has been connected at:" + new Date() + '\n');
             boolean connected = true;
+            startCheck = true;
 
             dataFromUser = new DataInputStream(clientSocket.getInputStream());
             dataToUser = new DataOutputStream(clientSocket.getOutputStream());
             boolean test = true;
 
+            System.out.println("Nu kører det");
             while(connected){
 
-                String name = dataFromUser.readUTF();
-                System.out.println(name);
+                //String name = dataFromUser.readUTF();
+                //System.out.println(name);
+
+                while(startCheck){
+                    System.out.println("Wuppa");
+
+                    boolean start = dataFromUser.readBoolean();
+                    if(start){
+                        System.out.println("Game has started");
+                        server.sendToAll("Game has started");
+                        startCheck = false;
+                        server.startGame();
+                    }
+                }
 
 
                 /*//Stuff happens here that makes the program work
@@ -57,8 +73,17 @@ public class UserThread implements Runnable{
 
     public void sendMessage(String message){
         try {
+            dataToUser = new DataOutputStream(clientSocket.getOutputStream());
             dataToUser.writeUTF(message);
             dataToUser.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendCard(String card){
+        try {
+            dataToUser.writeUTF(card);
         } catch (IOException e) {
             e.printStackTrace();
         }
