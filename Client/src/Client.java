@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Client {
 
-    static String host = "192.168.43.6";
+    static String host = "172.20.10.7";
     static int port = 6969;
     static DataInputStream in;
     static DataOutputStream out;
@@ -41,13 +41,21 @@ public class Client {
             //out.flush();
 
             // }
-        while(true){
-        String name = input.nextLine();
-        out.writeUTF(name);
+            while(connect){
+                //Boolean lobby = true;
+                //out.writeBoolean(lobby);
+                //String lobbyName = in.readUTF();
+                //System.out.println(lobbyName);
+                int start = input.nextInt();
+                System.out.println(start);
+                if(start == 1){
+                    boolean test = true;
+                    System.out.println(test);
+                    out.writeBoolean(test);
+                }
 
-        String print = in.readUTF();
-        System.out.println(print);
-        }
+
+            }
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
