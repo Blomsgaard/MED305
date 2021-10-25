@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +18,8 @@ public class SceneController {
     private Stage stage;
     private Scene scene;
     private FXMLLoader fxmlLoader;
+    private TextField inputName;
+    private Label displayName;
 
     //https://www.youtube.com/watch?v=hcM-R-YOKkQ&ab_channel=BroCode
     // method to switch scenes
@@ -24,14 +27,13 @@ public class SceneController {
     protected void onButtonClick(ActionEvent event) throws IOException {
         welcomeText.setText("Welcome to JavaFX Application!");
         //load the correct .fxml file
-        fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("CARDS_AGAINST_MEDIALOGY.fxml"));
+        fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("CAM_1.fxml"));
         //cast the source of the event to Node, cast the entire stage to Stage
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(fxmlLoader.load());
         // set the scene to the stage
         stage.setScene(scene);
         stage.show(); //display it
-
 
     }
 
@@ -43,6 +45,9 @@ public class SceneController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(fxmlLoader.load(), 560, 440);
         stage.setScene(scene);
+        // inputName.getText();
+        //displayName.setText(inputName.getText());
+
         stage.show();
 
     }
