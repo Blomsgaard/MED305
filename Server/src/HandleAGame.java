@@ -6,6 +6,7 @@ public class HandleAGame implements Runnable{
 
     @Override
     public void run() {
+
         //Creates a deck of solution cards and adds them in an arraylist
         ArrayList<SolutionCard> solutionDeck = new ArrayList<>();
         for(SolutionText solutionText : SolutionText.values()){

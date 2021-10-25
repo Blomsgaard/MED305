@@ -10,25 +10,29 @@ import java.util.Date;
 
 public class Server {
     private static int port = 6969;
+    //An arraylist for the users joined and their Threads
+    private ArrayList<UserThread> users;
+    //Counts the numbers of clients
+    private int numberOfClient = 0;
+
+    //Booleans to handle the different stages of the game
+    private boolean connected = true;
+    private boolean lobby = false;
 
 
     public static void main(String[] args) {
+        Server server = new Server();
+        server.initiateLobby();
+    }
 
-
-
-        new Thread( () -> {
+    public void initiateLobby() {
             try {
                 ServerSocket serverSocket = new ServerSocket(port);
                 System.out.println("Server has started at:" + new Date() + '\n');
 
-                //Counts the numbers of clients
-                int numberOfClient = 0;
-
-
-                while(true){
+                while (connected) {
                     Socket connectToClient = serverSocket.accept();
                     numberOfClient++;
-                    boolean lobby = false;
 
                     //Displays information about the connected clients
                     System.out.println("Client has connected at:" + new Date() + '\n');
@@ -39,17 +43,15 @@ public class Server {
 
                     lobby = dataFromUser.readBoolean();
 
-                    while(lobby) {
-
+                    while (lobby) {
                         System.out.println("Lobby has been created");
 
-                        new Thread(
-                                new ServerRunnable(connectToClient, "Multithreaded Server")
-                        ).start();
+                        UserThread newUser = new UserThread(connectToClient, "Multithreaded Server");
+                        users.add(newUser);
+
+                        // = dataFromUser.readBoolean();
 
                     }
-
-
 
                 }
 
@@ -58,9 +60,20 @@ public class Server {
                 e.printStackTrace();
             }
 
-        }).start();
+        }
 
+
+    public void startGame(){
+        boolean start = true;
+
+        if(start){
+
+            for(UserThread userThread : users){
+                    userThread.sendMessage("Game has started!");
+            }
+            new Thread(new HandleAGame()).start();
+
+        }
     }
-
 
 }
