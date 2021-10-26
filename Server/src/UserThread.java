@@ -11,6 +11,7 @@ public class UserThread extends Thread{
     private DataInputStream dataFromUser;
     private DataOutputStream dataToUser;
     private boolean startCheck;
+    private int points = 0;
 
     //Constructor for the class
     public UserThread(Server server, Socket clientSocket){
@@ -87,5 +88,13 @@ public class UserThread extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void increasePoints(){
+        points++;
     }
 }
