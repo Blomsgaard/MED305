@@ -17,6 +17,9 @@ public class Server {
     private boolean connected = true;
     private boolean lobby = true;
 
+    private DataInputStream dataFromUser;
+    private DataOutputStream dataToUser;
+
 
     public static void main(String[] args) {
         Server server = new Server();
@@ -29,18 +32,32 @@ public class Server {
                 System.out.println("Server has started at:" + new Date() + '\n');
                 users = new ArrayList<>();
 
+
                 while (lobby) {
                     Socket connectToClient = serverSocket.accept();
 
+                    dataFromUser = new DataInputStream(connectToClient.getInputStream());
+                    dataToUser = new DataOutputStream(connectToClient.getOutputStream());
 
                     //Displays information about the connected clients
                     System.out.println("Client has connected at:" + new Date() + '\n');
 
-                    UserThread newUser = new UserThread(this, connectToClient);
+                    String name = dataFromUser.readUTF();
+
+                    UserThread newUser = new UserThread(this, connectToClient, name);
                     users.add(newUser);
                     newUser.start();
 
                     System.out.println("Total number of client connected: " + users.size() + '\n');
+                    System.out.println("List of player names:");
+
+                    //Prints all the player names and sends them to all users as well
+                    dataToUser.writeUTF("List of player names:");
+                    for(int i = 0; i < users.size(); i++){
+                        System.out.println(users.get(i).getUsername());
+                        sendToAll(users.get(i).getUsername());
+                    }
+
 
                     //DataInputStream dataFromUser = new DataInputStream(connectToClient.getInputStream());
                     //DataOutputStream dataToUser = new DataOutputStream(connectToClient.getOutputStream());
@@ -64,14 +81,16 @@ public class Server {
         }
     }
 
+    //A method to start the game, when the players are ready
     public void startGame(){
         boolean lobby = false;
         boolean start = true;
 
+        //The game starts if all players are ready
         if(start){
 
             sendToAll("Game has started!");
-
+            //The thread that handles the game starts
             new Thread(new HandleAGame(this)).start();
 
         }

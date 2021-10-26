@@ -7,6 +7,7 @@ import java.util.Date;
 public class UserThread extends Thread{
     private Socket clientSocket = null;
     private String serverText = "";
+    private String username;
     private Server server;
     private DataInputStream dataFromUser;
     private DataOutputStream dataToUser;
@@ -14,9 +15,10 @@ public class UserThread extends Thread{
     private int points = 0;
 
     //Constructor for the class
-    public UserThread(Server server, Socket clientSocket){
+    public UserThread(Server server, Socket clientSocket, String name){
         this.clientSocket = clientSocket;
         this.server = server;
+        this.username = name;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class UserThread extends Thread{
                     boolean start = dataFromUser.readBoolean();
                     if(start){
                         System.out.println("Game has started");
-                        server.sendToAll("Game has started");
+                        //server.sendToAll("Game has started");
                         startCheck = false;
                         server.startGame();
                     }
@@ -94,7 +96,13 @@ public class UserThread extends Thread{
         return points;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void increasePoints(){
         points++;
     }
+
+
 }
