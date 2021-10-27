@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-public class UserThread extends Thread{
+public class UserThread extends Thread implements java.io.Serializable{
     private Socket clientSocket = null;
     private String serverText = "";
     private String username;
     private Server server;
     private DataInputStream dataFromUser;
     private DataOutputStream dataToUser;
+    private ObjectOutputStream objectToUser;
+
     private boolean startCheck;
     private int points = 0;
+    private ArrayList<SolutionCard> userHand = new ArrayList<SolutionCard>(5);
 
     //Constructor for the class
     public UserThread(Server server, Socket clientSocket, String name){
@@ -104,5 +107,20 @@ public class UserThread extends Thread{
         points++;
     }
 
+    public ArrayList<SolutionCard> getUserHand() {
+        return userHand;
+    }
+
+    public void setUserHand(ArrayList<SolutionCard> userHand) {
+        this.userHand = userHand;
+    }
+
+    public void sendUserHand() throws IOException {
+        objectToUser = new ObjectOutputStream(clientSocket.getOutputStream());
+        //for(int i = 0; i < userHand.size(); i++) {
+         //   objectToUser.writeObject(userHand.get(0));
+        //}
+        objectToUser.writeObject(userHand.get(0));
+    }
 
 }

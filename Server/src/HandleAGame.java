@@ -1,5 +1,7 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.Serializable;
 
 public class HandleAGame implements Runnable{
 private ArrayList<UserThread> users;
@@ -39,11 +41,20 @@ public HandleAGame(Server server){
           //  System.out.println(solutionDeck.get(i).toString());
 
         for(int i = 0; i < users.size(); i++){
+            ArrayList<SolutionCard> userHand = new ArrayList<>(5);
             for(int j = 0; j < 5; j++){
-                users.get(i).sendCard(solutionDeck.get(topCard).toString());
+                userHand.add(solutionDeck.get(topCard));
                 topCard++;
             }
+            users.get(i).setUserHand(userHand);
+            /*
+            try {
+                users.get(i).sendUserHand();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
         }
+
     }
 
 
