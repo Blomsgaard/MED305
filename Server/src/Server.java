@@ -91,7 +91,7 @@ public class Server {
 			if (userThread.isReadyCheck() == true) {
 				start = false;
 			}
-		} */
+		} */ 
 
         //The game starts if all players are ready
         if(start){
