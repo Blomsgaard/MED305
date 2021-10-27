@@ -14,6 +14,7 @@ public class UserThread extends Thread implements java.io.Serializable{
     private ObjectOutputStream objectToUser;
 
     private boolean startCheck;
+    private boolean readyCheck;
     private int points = 0;
     private ArrayList<SolutionCard> userHand = new ArrayList<SolutionCard>(5);
 
@@ -41,6 +42,17 @@ public class UserThread extends Thread implements java.io.Serializable{
                 //String name = dataFromUser.readUTF();
                 //System.out.println(name);
 
+                 /*  readyCheck = true;
+			while (readyCheck) {
+				String clientMessage = dataFromUser.readUTF();
+				if(clientMessage.equalsIgnoreCase("ready")) {
+					server.sendToAll(username + " is ready", this);
+					readyCheck = false;
+					server.startGame();
+				}
+
+			}*/
+                
                 while(startCheck){
                     System.out.println("Wuppa");
 
@@ -52,6 +64,8 @@ public class UserThread extends Thread implements java.io.Serializable{
                         server.startGame();
                     }
                 }
+                
+             
 
 
                 /*//Stuff happens here that makes the program work
@@ -107,6 +121,7 @@ public class UserThread extends Thread implements java.io.Serializable{
         points++;
     }
 
+
     public ArrayList<SolutionCard> getUserHand() {
         return userHand;
     }
@@ -122,5 +137,9 @@ public class UserThread extends Thread implements java.io.Serializable{
         //}
         objectToUser.writeObject(userHand.get(0));
     }
+
+    public boolean isReadyCheck() {
+		return readyCheck;
+	}
 
 }

@@ -86,6 +86,13 @@ public class Server {
     public void startGame(){
         boolean lobby = false;
         boolean start = true;
+        
+        // Used to check if the users are ready
+        /* for (UserThread userThread : users) {
+			if (userThread.isReadyCheck() == true) {
+				start = false;
+			}
+		} */ 
 
 
         //The game starts if all players are ready
