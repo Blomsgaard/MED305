@@ -41,15 +41,7 @@ public class UserThread extends Thread{
 
                  /*  readyCheck = true;
 			while (readyCheck) {
-				String clientMessage = input.readUTF();
-				if(clientMessage.equalsIgnoreCase("quit")) {
-					server.sendToAll(username + " disconnected from the server", this);
-					server.removeUser(this, username);
-					socket.close();
-
-					readyCheck = false;
-
-				}
+				String clientMessage = dataFromUser.readUTF();
 				if(clientMessage.equalsIgnoreCase("ready")) {
 					server.sendToAll(username + " is ready", this);
 					readyCheck = false;
