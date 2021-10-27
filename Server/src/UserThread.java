@@ -12,6 +12,7 @@ public class UserThread extends Thread{
     private DataInputStream dataFromUser;
     private DataOutputStream dataToUser;
     private boolean startCheck;
+    private boolean readyCheck;
     private int points = 0;
 
     //Constructor for the class
@@ -38,6 +39,25 @@ public class UserThread extends Thread{
                 //String name = dataFromUser.readUTF();
                 //System.out.println(name);
 
+                 /*  readyCheck = true;
+			while (readyCheck) {
+				String clientMessage = input.readUTF();
+				if(clientMessage.equalsIgnoreCase("quit")) {
+					server.sendToAll(username + " disconnected from the server", this);
+					server.removeUser(this, username);
+					socket.close();
+
+					readyCheck = false;
+
+				}
+				if(clientMessage.equalsIgnoreCase("ready")) {
+					server.sendToAll(username + " is ready", this);
+					readyCheck = false;
+					server.startGame();
+				}
+
+			}*/
+                
                 while(startCheck){
                     System.out.println("Wuppa");
 
@@ -49,6 +69,8 @@ public class UserThread extends Thread{
                         server.startGame();
                     }
                 }
+                
+             
 
 
                 /*//Stuff happens here that makes the program work
@@ -104,5 +126,8 @@ public class UserThread extends Thread{
         points++;
     }
 
+    /* public boolean isReadyCheck() {
+		return readyCheck;
+	}*/
 
 }
