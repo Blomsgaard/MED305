@@ -91,6 +91,7 @@ public class UserThread extends Thread implements java.io.Serializable{
         }
     }
 
+    //A method for sending messages to a user by sending a String
     public void sendMessage(String message){
         try {
             dataToUser = new DataOutputStream(clientSocket.getOutputStream());
@@ -126,16 +127,17 @@ public class UserThread extends Thread implements java.io.Serializable{
         return userHand;
     }
 
+    //Sets the user hand by receiving an array of solutioncards
     public void setUserHand(ArrayList<SolutionCard> userHand) {
         this.userHand = userHand;
     }
 
     public void sendUserHand() throws IOException {
-        objectToUser = new ObjectOutputStream(clientSocket.getOutputStream());
-        //for(int i = 0; i < userHand.size(); i++) {
-         //   objectToUser.writeObject(userHand.get(0));
-        //}
-        objectToUser.writeObject(userHand.get(0));
+        //Takes to Text from each solution card from the users hand and sends it to the client
+        for(int i = 0; i < userHand.size(); i++) {
+            dataToUser.writeUTF(userHand.get(i).toString());
+        }
+
     }
 
     public boolean isReadyCheck() {

@@ -40,21 +40,26 @@ public HandleAGame(Server server){
         //for(int i = 0; i < solutionDeck.size();i++)
           //  System.out.println(solutionDeck.get(i).toString());
 
+        //Issues five SolutionCards to each user
         for(int i = 0; i < users.size(); i++){
             ArrayList<SolutionCard> userHand = new ArrayList<>(5);
+
             for(int j = 0; j < 5; j++){
                 userHand.add(solutionDeck.get(topCard));
                 topCard++;
             }
             users.get(i).setUserHand(userHand);
-            /*
+            System.out.println(users.get(i).getUserHand());
+
             try {
                 users.get(i).sendUserHand();
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
         }
 
+        server.sendToAll("Printing is working again!");
+        //commit Test
     }
 
 
