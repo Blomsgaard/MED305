@@ -72,7 +72,7 @@ public HandleAGame(Server server){
 
         while(game){
             String problem = problemDeck.get(problemTopCard).toString();
-            ArrayList<SolutionCard> solutionsChosen = new ArrayList<>();
+            ArrayList<SolutionChosen> solutionsChosen = new ArrayList<>();
             boolean goFurther = true;
 
             for(int i = 0; i < users.size(); i++){
@@ -100,11 +100,18 @@ public HandleAGame(Server server){
                 for (int i = 0; i < users.size(); i++) {
                     if (i != zhar) {
                         try {
-                            System.out.println("Test2");
+                            //Wait for the client to send the index value for the card chosen
                             int solutionChosen = users.get(i).receiveInt();
-                            System.out.println("Test3");
                             SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
-                            solutionsChosen.add(solution);
+                            solutionsChosen.add(new SolutionChosen(solution, i));
+
+                            //Removes the card chosen from the player hand
+                            users.get(i).removeCard(solutionChosen);
+                            //Gives the user a new card
+                            //users.get(i).addCard(solutionDeck.get(solutionTopCard));
+                            //solutionTopCard++;
+
+                            //Checks if all the users have chosen a solution and stops the loop if they have
                             if(solutionsChosen.size() >= users.size()-1){
                                 goFurther = false;
                             }
@@ -115,15 +122,59 @@ public HandleAGame(Server server){
                     }
                 }
             }
+
             System.out.println(solutionsChosen);
 
+            //Sends the chosen solutions to all players
             server.sendToAll(problem);
             for(int i = 0; i < solutionsChosen.size(); i++) {
-                server.sendToAll(i + ": " + solutionsChosen.get(i).toString());
+                server.sendToAll(i + ": " + solutionsChosen.get(i).getSolutionCard().toString());
+            }
+
+            try {
+                //Waits for the zhar to choose a winner and receives the chosen cards index value
+                int solutionWinner = users.get(zhar).receiveInt();
+                server.sendToAll("The winner is:");
+                server.sendToAll(solutionsChosen.get(solutionWinner).getSolutionCard().toString());
+                users.get(solutionsChosen.get(solutionWinner).getUser()).increasePoints();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Print a scoreboard
+            server.sendToAll("Scoreboard:");
+            for(int i = 0; i < users.size(); i++){
+                server.sendToAll(users.get(i).getUsername() + ": " + users.get(i).getPoints());
+            }
+
+            //Give the players new solution cards
+            for(int i = 0; i < users.size(); i++){
+                if (i != zhar){
+                    users.get(i).addCard(solutionDeck.get(solutionTopCard));
+                }
+            }
+
+            //End round check
+            for(int i = 0; i < users.size(); i++){
+                int score = users.get(i).getPoints();
+                //checks if a player has 5 points and in that case the game ends
+                if(score >=5){
+                    game = false;
+                }
+            }
+            //A new problemCard is chosen and a new zhar is assigned
+            problemTopCard++;
+
+            if(zhar < users.size() - 1) {
+                zhar++;
+            }
+            else{
+                zhar = 0;
             }
 
 
-            game = false;
+
 
         }
     }
