@@ -140,6 +140,16 @@ public class UserThread extends Thread implements java.io.Serializable{
 
     }
 
+    public void removeCard(int index){
+        userHand.remove(index);
+    }
+
+    public int receiveInt() throws IOException {
+        dataFromUser = new DataInputStream(clientSocket.getInputStream());
+        int intReceived = dataFromUser.readInt();
+        return intReceived;
+    }
+
     public boolean isReadyCheck() {
 		return readyCheck;
 	}
