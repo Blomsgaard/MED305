@@ -37,20 +37,20 @@ public enum ProblemText {
     AJ("What's wrong with these gorillas?"),
     AK("You say tomato, I say ____."),
     AL("America is hungry. America needs ____."),
-    AM("Nothing says \"I love you\" like ____."),
-    AN(""),
-    AO(""),
-    AP(""),
-    AQ(""),
-    AR(""),
-    AS(""),
-    AT(""),
-    AU(""),
-    AV(""),
-    AW(""),
-    AX(""),
-    AY(""),
-    AZ("");
+    AM("Nothing says \"I love you\" like ____.");
+   // AN(""),
+   // AO(""),
+   // AP(""),
+   // AQ(""),
+   // AR(""),
+   // AS(""),
+   // AT(""),
+   // AU(""),
+   // AV(""),
+   // AW(""),
+   // AX(""),
+   // AY(""),
+   // AZ("");
 
 
 

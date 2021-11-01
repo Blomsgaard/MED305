@@ -88,11 +88,11 @@ public class Server {
         boolean start = true;
         
         // Used to check if the users are ready
-        /* for (UserThread userThread : users) {
-			if (userThread.isReadyCheck() == true) {
+        for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).isReadyCheck() == true) {
 				start = false;
 			}
-		} */ 
+		}
 
 
         //The game starts if all players are ready

@@ -13,7 +13,6 @@ public class UserThread extends Thread implements java.io.Serializable{
     private DataOutputStream dataToUser;
     private ObjectOutputStream objectToUser;
 
-    private boolean startCheck;
     private boolean readyCheck;
     private int points = 0;
     private ArrayList<SolutionCard> userHand = new ArrayList<SolutionCard>(5);
@@ -30,7 +29,7 @@ public class UserThread extends Thread implements java.io.Serializable{
         try{
             //System.out.println("A client has been connected at:" + new Date() + '\n');
             boolean connected = true;
-            startCheck = true;
+            readyCheck = true;
 
             dataFromUser = new DataInputStream(clientSocket.getInputStream());
             dataToUser = new DataOutputStream(clientSocket.getOutputStream());
@@ -53,14 +52,13 @@ public class UserThread extends Thread implements java.io.Serializable{
 
 			}*/
                 
-                while(startCheck){
+                while(readyCheck){
                     System.out.println("Wuppa");
 
                     boolean start = dataFromUser.readBoolean();
                     if(start){
-                        System.out.println("Game has started");
                         //server.sendToAll("Game has started");
-                        startCheck = false;
+                        readyCheck = false;
                         server.startGame();
                     }
                 }

@@ -73,6 +73,7 @@ public HandleAGame(Server server){
         while(game){
             String problem = problemDeck.get(problemTopCard).toString();
             ArrayList<SolutionCard> solutionsChosen = new ArrayList<>();
+            boolean goFurther = true;
 
             for(int i = 0; i < users.size(); i++){
                 //The problem is printed to the users who must find a solution
@@ -93,17 +94,25 @@ public HandleAGame(Server server){
                 }
             }
 
-            //For every user that must choose a solution, the server wait to get the index value of that solution,
-            //and adds them in a temp array, so they can be viewed by the zhar
-            for(int i = 0; i < users.size()-1; i++){
-                if (i != zhar){
-                    try {
-                        int solutionChosen = users.get(i).receiveInt();
-                        SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
-                        solutionsChosen.add(solution);
+            while(goFurther) {
+                //For every user that must choose a solution, the server wait to get the index value of that solution,
+                //and adds them in a temp array, so they can be viewed by the zhar
+                for (int i = 0; i < users.size(); i++) {
+                    if (i != zhar) {
+                        try {
+                            System.out.println("Test");
+                            int solutionChosen = users.get(i).receiveInt();
+                            System.out.println("Test");
+                            SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
+                            solutionsChosen.add(solution);
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                            if(solutionsChosen.size() < users.size()-1){
+                                goFurther = false;
+                            }
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -112,7 +121,9 @@ public HandleAGame(Server server){
             for(int i = 0; i < solutionsChosen.size(); i++) {
                 server.sendToAll(i + ": " + solutionsChosen.get(i).toString());
             }
+            System.out.println(solutionsChosen);
 
+            game = false;
 
         }
     }
