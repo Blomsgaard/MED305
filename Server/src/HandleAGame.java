@@ -100,13 +100,12 @@ public HandleAGame(Server server){
                 for (int i = 0; i < users.size(); i++) {
                     if (i != zhar) {
                         try {
-                            System.out.println("Test");
+                            System.out.println("Test2");
                             int solutionChosen = users.get(i).receiveInt();
-                            System.out.println("Test");
+                            System.out.println("Test3");
                             SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
                             solutionsChosen.add(solution);
-
-                            if(solutionsChosen.size() < users.size()-1){
+                            if(solutionsChosen.size() >= users.size()-1){
                                 goFurther = false;
                             }
 
@@ -116,12 +115,13 @@ public HandleAGame(Server server){
                     }
                 }
             }
+            System.out.println(solutionsChosen);
 
             server.sendToAll(problem);
             for(int i = 0; i < solutionsChosen.size(); i++) {
                 server.sendToAll(i + ": " + solutionsChosen.get(i).toString());
             }
-            System.out.println(solutionsChosen);
+
 
             game = false;
 
