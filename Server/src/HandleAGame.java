@@ -79,6 +79,12 @@ public HandleAGame(Server server){
                 if (i != zhar ) {
                     users.get(i).sendMessage("Choose a fitting answer to the problem below:");
                     users.get(i).sendMessage(problem);
+
+                    users.get(i).sendMessage("Pick the best solution by its number:");
+                    for(int j = 0; j < users.get(i).getUserHand().size(); j++){
+                        users.get(i).sendMessage(j + ": " + users.get(i).getUserHand().get(j).toString());
+                    }
+
                 }
                 //The problem is presented to the zhar to read it out loud
                 else {
