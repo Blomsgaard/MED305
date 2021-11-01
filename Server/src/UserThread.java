@@ -156,4 +156,8 @@ public class UserThread extends Thread implements java.io.Serializable{
 		return readyCheck;
 	}
 
+    public void sendBoolean(boolean b) throws IOException {
+        dataToUser = new DataOutputStream(clientSocket.getOutputStream());
+        dataToUser.writeBoolean(b);
+    }
 }

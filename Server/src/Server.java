@@ -82,6 +82,7 @@ public class Server {
         }
     }
 
+
     //A method to start the game, when the players are ready
     public void startGame(){
         boolean lobby = false;

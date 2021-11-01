@@ -1,4 +1,5 @@
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ private int problemTopCard = 0;
 private int zhar;
 private boolean game;
 private DataInputStream dataFromUser;
+private DataOutputStream dataToUser;
 
 
 public HandleAGame(Server server){
@@ -123,7 +125,7 @@ public HandleAGame(Server server){
                 }
             }
 
-            System.out.println(solutionsChosen);
+            System.out.println(solutionsChosen.get(0).getUser());
 
             //Sends the chosen solutions to all players
             server.sendToAll(problem);
@@ -150,9 +152,26 @@ public HandleAGame(Server server){
 
             //Give the players new solution cards
             for(int i = 0; i < users.size(); i++){
+                //boolean stopPrint;
                 if (i != zhar){
                     users.get(i).addCard(solutionDeck.get(solutionTopCard));
+                    solutionTopCard++;
+                    /*try {
+                        stopPrint = true;
+                        users.get(i).sendBoolean(stopPrint);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+
                 }
+                /*else {
+                    stopPrint = false;
+                    try {
+                        users.get(i).sendBoolean(stopPrint);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }*/
             }
 
             //End round check
@@ -172,8 +191,6 @@ public HandleAGame(Server server){
             else{
                 zhar = 0;
             }
-
-
 
 
         }
