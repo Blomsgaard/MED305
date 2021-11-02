@@ -56,7 +56,7 @@ public class Server {
                     dataToUser.writeUTF("List of player names:");
                     for(int i = 0; i < users.size(); i++){
                         System.out.println(users.get(i).getUsername());
-                        sendToAll(users.get(i).getUsername());
+                        users.get(i).sendPlayerNames();
                     }
 
 

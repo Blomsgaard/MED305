@@ -8,8 +8,10 @@ import java.io.Serializable;
 public class HandleAGame implements Runnable{
 private ArrayList<UserThread> users;
 private Server server;
+
 private int solutionTopCard = 0;
 private int problemTopCard = 0;
+
 private int zhar;
 private boolean game;
 private DataInputStream dataFromUser;
@@ -42,14 +44,6 @@ public HandleAGame(Server server){
         Collections.shuffle(solutionDeck);
         Collections.shuffle(problemDeck);
 
-        //Printing of the deck to check if it works
-        //for(int i = 0; i < problemDeck.size();i++)
-          //  System.out.println(problemDeck.get(i).toString());
-
-        //Printing of the deck to check if it works
-        //for(int i = 0; i < solutionDeck.size();i++)
-          //  System.out.println(solutionDeck.get(i).toString());
-
         //Issues five SolutionCards to each user
         for(int i = 0; i < users.size(); i++){
             ArrayList<SolutionCard> userHand = new ArrayList<>(5);
@@ -68,11 +62,9 @@ public HandleAGame(Server server){
             }
         }
 
-        server.sendToAll("Printing is working again!");
-        //commit Test
-
-
+        //Runs the game in this loop. It continues until a player has received 5 points
         while(game){
+
             String problem = problemDeck.get(problemTopCard).toString();
             ArrayList<SolutionChosen> solutionsChosen = new ArrayList<>();
             boolean goFurther = true;
@@ -95,6 +87,7 @@ public HandleAGame(Server server){
                     users.get(zhar).sendMessage(problem);
                 }
             }
+
 
             while(goFurther) {
                 //For every user that must choose a solution, the server wait to get the index value of that solution,
@@ -156,35 +149,21 @@ public HandleAGame(Server server){
                 if (i != zhar){
                     users.get(i).addCard(solutionDeck.get(solutionTopCard));
                     solutionTopCard++;
-                    /*try {
-                        stopPrint = true;
-                        users.get(i).sendBoolean(stopPrint);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-
                 }
-                /*else {
-                    stopPrint = false;
-                    try {
-                        users.get(i).sendBoolean(stopPrint);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }*/
             }
 
             //End round check
             for(int i = 0; i < users.size(); i++){
                 int score = users.get(i).getPoints();
                 //checks if a player has 5 points and in that case the game ends
-                if(score >=5){
+                if(score >= 5){
                     game = false;
                 }
             }
             //A new problemCard is chosen and a new zhar is assigned
             problemTopCard++;
 
+            //A new zhar is chosen
             if(zhar < users.size() - 1) {
                 zhar++;
             }

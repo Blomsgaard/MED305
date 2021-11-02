@@ -37,20 +37,6 @@ public class UserThread extends Thread implements java.io.Serializable{
 
             System.out.println("Nu kører det");
             while(connected){
-
-                //String name = dataFromUser.readUTF();
-                //System.out.println(name);
-
-                 /*  readyCheck = true;
-			while (readyCheck) {
-				String clientMessage = dataFromUser.readUTF();
-				if(clientMessage.equalsIgnoreCase("ready")) {
-					server.sendToAll(username + " is ready", this);
-					readyCheck = false;
-					server.startGame();
-				}
-
-			}*/
                 
                 while(readyCheck){
                     System.out.println("Wuppa");
@@ -159,5 +145,30 @@ public class UserThread extends Thread implements java.io.Serializable{
     public void sendBoolean(boolean b) throws IOException {
         dataToUser = new DataOutputStream(clientSocket.getOutputStream());
         dataToUser.writeBoolean(b);
+    }
+
+    //Method for sending playernames to the client
+    public void sendPlayerNames(){
+        try {
+            dataToUser = new DataOutputStream(clientSocket.getOutputStream());
+
+            ArrayList<String> playerNames = new ArrayList<>();
+            for(int i = 0; i < server.getUsers().size(); i++){
+                playerNames.add(server.getUsers().get(i).getUsername());
+            }
+
+            //Sents a certain message so the client now that it receives a playerlist
+            sendMessage("PLAYER_LIST");
+            //Sents the size of the playerlist so the client now how many players must be added
+            dataToUser.writeInt(playerNames.size());
+
+            //Sents all the playernames
+            for(int i = 0; i < playerNames.size(); i++){
+             dataToUser.writeUTF(playerNames.get(i));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
