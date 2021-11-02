@@ -58,11 +58,6 @@ public class Server {
                         System.out.println(users.get(i).getUsername());
                         users.get(i).sendPlayerNames();
                     }
-
-
-                    //DataInputStream dataFromUser = new DataInputStream(connectToClient.getInputStream());
-                    //DataOutputStream dataToUser = new DataOutputStream(connectToClient.getOutputStream());
-
                 }
 
 
@@ -95,10 +90,8 @@ public class Server {
 			}
 		}
 
-
         //The game starts if all players are ready
         if(start){
-
             sendToAll("Game has started!");
             //The thread that handles the game starts
             new Thread(new HandleAGame(this)).start();

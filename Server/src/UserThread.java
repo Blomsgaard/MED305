@@ -35,12 +35,9 @@ public class UserThread extends Thread implements java.io.Serializable{
             dataToUser = new DataOutputStream(clientSocket.getOutputStream());
             boolean test = true;
 
-            System.out.println("Nu kører det");
             while(connected){
                 
                 while(readyCheck){
-                    System.out.println("Wuppa");
-
                     boolean start = dataFromUser.readBoolean();
                     if(start){
                         //server.sendToAll("Game has started");
@@ -78,14 +75,13 @@ public class UserThread extends Thread implements java.io.Serializable{
         return points;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public void increasePoints(){
         points++;
     }
 
+    public String getUsername() {
+        return username;
+    }
 
     public ArrayList<SolutionCard> getUserHand() {
         return userHand;

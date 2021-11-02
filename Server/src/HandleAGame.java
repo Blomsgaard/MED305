@@ -101,9 +101,6 @@ public HandleAGame(Server server){
 
                             //Removes the card chosen from the player hand
                             users.get(i).removeCard(solutionChosen);
-                            //Gives the user a new card
-                            //users.get(i).addCard(solutionDeck.get(solutionTopCard));
-                            //solutionTopCard++;
 
                             //Checks if all the users have chosen a solution and stops the loop if they have
                             if(solutionsChosen.size() >= users.size()-1){
@@ -131,7 +128,6 @@ public HandleAGame(Server server){
                 server.sendToAll("The winner is:");
                 server.sendToAll(solutionsChosen.get(solutionWinner).getSolutionCard().toString());
                 users.get(solutionsChosen.get(solutionWinner).getUser()).increasePoints();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
