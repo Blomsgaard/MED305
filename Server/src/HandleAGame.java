@@ -79,7 +79,6 @@ public HandleAGame(Server server){
                     for(int j = 0; j < users.get(i).getUserHand().size(); j++){
                         users.get(i).sendMessage(j + ": " + users.get(i).getUserHand().get(j).toString());
                     }
-
                 }
                 //The problem is presented to the zhar to read it out loud
                 else {
@@ -149,6 +148,11 @@ public HandleAGame(Server server){
                 if (i != zhar){
                     users.get(i).addCard(solutionDeck.get(solutionTopCard));
                     solutionTopCard++;
+                    //If the last card of the deck is drawn, the deck is shuffled and a new top card is drawn
+                    if(solutionTopCard >= solutionDeck.size()){
+                        Collections.shuffle(solutionDeck);
+                        solutionTopCard = 0;
+                    }
                 }
             }
 

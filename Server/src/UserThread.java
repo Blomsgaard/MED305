@@ -48,26 +48,6 @@ public class UserThread extends Thread implements java.io.Serializable{
                         server.startGame();
                     }
                 }
-                
-             
-
-
-                /*//Stuff happens here that makes the program work
-                ArrayList<Game> gameList = new ArrayList<>();
-
-                 boolean gameCreated = false;
-                 gameCreated = dataFromUser.readBoolean();
-
-                 if(gameCreated = true){
-                     gameList.add(new Game(dataFromUser.readUTF()));
-
-                     //Sends the gameNames created back to the user
-                     for (int i = 0; i < gameList.size(); i++){
-                         dataToUser.writeUTF(gameList.get(i).getGameName());
-                     }
-
-                 }*/
-
             }
 
         } catch (Exception e) {
