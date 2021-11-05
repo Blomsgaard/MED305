@@ -133,7 +133,7 @@ public HandleAGame(Server server){
 
                 // if the value from the zhar isn't between 0 and the amount of players
                 if(users.get(zhar).receiveInt() > users.size()){
-                    System.out.println("Please enter a value ranging from 0-" + users.size());
+                    System.out.println("Please enter a value ranging from 0 - " + users.size());
                 }
 
                 server.sendToAll("The winner is:");
