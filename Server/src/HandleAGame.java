@@ -66,6 +66,11 @@ public HandleAGame(Server server){
             for(int i = 0; i < users.size(); i++){
                 //The problem is printed to the users who must find a solution
                 if (i != zhar ) {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     users.get(i).sendMessage("Choose a fitting answer to the problem below:");
                     users.get(i).sendMessage(problem);
 
