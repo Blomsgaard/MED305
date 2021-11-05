@@ -142,7 +142,7 @@ public HandleAGame(Server server){
                     users.get(i).sendMessage(problem);
 
                     for(int j = 0; j < solutionsChosen.size(); j++){
-                        users.get(i).sendMessage(solutionsChosen.get(j).getSolutionCard().toString());
+                        users.get(i).sendMessage("\t" + solutionsChosen.get(j).getSolutionCard().toString());
                     }
                 }
                 //The problem is presented to the zhar to read it out loud
