@@ -189,6 +189,16 @@ public HandleAGame(Server server){
                 int score = users.get(i).getPoints();
                 //checks if a player has 5 points and in that case the game ends
                 if(score >= 5){
+                    server.sendToAll("Game Over");
+                    server.sendToAll("The total score of the game is:");
+                    try {
+                    users.get(i).sendScoreboard();
+                    } catch (IOException e) {
+                    e.printStackTrace();
+                    }
+                    //server.sendToAll(users.get(i).getUsername() + ": " + users.get(i).getPoints());
+                    server.sendToAll(("The winner of the game is:"));
+                    server.sendToAll("Thanks for playing!");
                     game = false;
                 }
             }
