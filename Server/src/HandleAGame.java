@@ -115,10 +115,24 @@ public HandleAGame(Server server){
                 }
             }
 
-            //Sends the chosen solutions to all players
-            server.sendToAll(problem);
-            for(int i = 0; i < solutionsChosen.size(); i++) {
-                server.sendToAll(i + ": " + solutionsChosen.get(i).getSolutionCard().toString());
+            //The problems chosen are displayed to all players
+            for(int i = 0; i < users.size(); i++){
+                if (i != zhar ) {
+                    users.get(i).sendMessage("Wait for the Pharaoh to pick the winner");
+                    users.get(i).sendMessage(problem);
+
+                    for(int j = 0; j < solutionsChosen.size(); j++){
+                        users.get(i).sendMessage(solutionsChosen.get(j).getSolutionCard().toString());
+                    }
+                }
+                //The problem is presented to the zhar to read it out loud
+                else {
+                    users.get(zhar).sendMessage("Chose the best solution to the problem");
+                    for(int j = 0; j < solutionsChosen.size(); j++) {
+                        users.get(zhar).sendMessage(j + ": " + solutionsChosen.get(j).getSolutionCard().toString());
+                    }
+                    users.get(zhar).sendMessage("Press the number matching the best solution");
+                }
             }
 
             try {
