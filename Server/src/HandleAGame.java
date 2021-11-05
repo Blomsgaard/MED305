@@ -131,7 +131,7 @@ public HandleAGame(Server server){
                 }
 
                 server.sendToAll("The winner is:");
-                server.sendToAll(solutionsChosen.get(solutionWinner).getSolutionCard().toString());
+                server.sendToAll(solutionsChosen.get(solutionWinner).getUser() + ": " + solutionsChosen.get(solutionWinner).getSolutionCard().toString());
                 users.get(solutionsChosen.get(solutionWinner).getUser()).increasePoints();
             } catch (IOException e) {
                 e.printStackTrace();
