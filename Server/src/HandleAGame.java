@@ -14,6 +14,9 @@ private int problemTopCard = 0;
 
 private int zhar;
 private boolean game;
+private boolean outOfBoundsCheck = true;
+private int solutionChosen;
+private int solutionWinner;
 private DataInputStream dataFromUser;
 private DataOutputStream dataToUser;
 
@@ -73,16 +76,9 @@ public HandleAGame(Server server){
                 //The problem is printed to the users who must find a solution
                     if (i != zhar ) {
 
-
-
                         users.get(i).sendMessage("Choose a fitting answer to the problem below:");
                         users.get(i).sendMessage(problem);
 
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         users.get(i).sendMessage("Pick the best solution by its number:");
                             for(int j = 0; j < users.get(i).getUserHand().size(); j++){
                             users.get(i).sendMessage(j + ": " + users.get(i).getUserHand().get(j).toString());
@@ -104,14 +100,18 @@ public HandleAGame(Server server){
                 for (int i = 0; i < users.size(); i++) {
                     if (i != zhar) {
                         try {
-                            //Wait for the client to send the index value for the card chosen
-                            int solutionChosen = users.get(i).receiveInt();
-
-                            // if the value from the user isn't between 0-4 (the amount of cards)
-                            if(users.get(i).receiveInt() > 4){
-                                System.out.println("Please enter a value ranging from 0-4");
+                            outOfBoundsCheck = true;
+                            while(outOfBoundsCheck) {
+                                //Wait for the client to send the index value for the card chosen
+                                solutionChosen = users.get(i).receiveInt();
+                                // if the value from the user isn't between 0-4 (the amount of cards)
+                                if (solutionChosen > 4) {
+                                    users.get(i).sendMessage("Please enter a value ranging from 0-4");
+                                }
+                                else{
+                                    outOfBoundsCheck = false;
+                                }
                             }
-
                             SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
                             solutionsChosen.add(new SolutionChosen(solution, i));
 
@@ -126,6 +126,9 @@ public HandleAGame(Server server){
 
                         } catch (IOException e) {
                             e.printStackTrace();
+                        }
+                        catch (IndexOutOfBoundsException e){
+
                         }
                     }
                 }
@@ -152,12 +155,17 @@ public HandleAGame(Server server){
             }
 
             try {
-                //Waits for the zhar to choose a winner and receives the chosen cards index value
-                int solutionWinner = users.get(zhar).receiveInt();
-
-                // if the value from the zhar isn't between 0 and the amount of players
-                if(users.get(zhar).receiveInt() > users.size()){
-                    System.out.println("Please enter a value ranging from 0 - " + users.size());
+                outOfBoundsCheck = true;
+                while(outOfBoundsCheck) {
+                    //Waits for the zhar to choose a winner and receives the chosen cards index value
+                    solutionWinner = users.get(zhar).receiveInt();
+                    // if the value from the zhar isn't between 0 and the amount of players
+                    if(solutionWinner > users.size()-1){
+                        users.get(zhar).sendMessage("Please enter a value ranging from 0-" + (solutionsChosen.size()-1));
+                    }
+                    else{
+                        outOfBoundsCheck = false;
+                    }
                 }
 
                 server.sendToAll("The winner is: ");
