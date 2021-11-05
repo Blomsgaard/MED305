@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class
 Server {
-    private static int port = 6969;
+    private static int port = 6970;
     //An arraylist for the users joined and their Threads
     private ArrayList<UserThread> users;
 
