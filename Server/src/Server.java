@@ -9,7 +9,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-public class Server {
+public class
+Server {
     private static int port = 6969;
     //An arraylist for the users joined and their Threads
     private ArrayList<UserThread> users;
