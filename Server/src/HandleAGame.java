@@ -63,16 +63,17 @@ public HandleAGame(Server server){
                 ArrayList<SolutionChosen> solutionsChosen = new ArrayList<>();
                 boolean goFurther = true;
 
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
                 for(int i = 0; i < users.size(); i++){
                 //The problem is printed to the users who must find a solution
                     if (i != zhar ) {
 
 
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
 
                         users.get(i).sendMessage("Choose a fitting answer to the problem below:");
                         users.get(i).sendMessage(problem);
@@ -89,11 +90,6 @@ public HandleAGame(Server server){
                     }
                 //The problem is presented to the zhar to read it out loud
                     else {
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         users.get(zhar).sendMessage("You are the zhar!");
                         users.get(zhar).sendMessage(problem);
 
