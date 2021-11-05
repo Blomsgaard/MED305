@@ -58,6 +58,7 @@ public class Server {
                         System.out.println(users.get(i).getUsername());
                         users.get(i).sendPlayerNames();
                     }
+                    dataToUser.writeUTF("");
                 }
 
 
@@ -92,7 +93,7 @@ public class Server {
 
         //The game starts if all players are ready
         if(start){
-            sendToAll("Game has started!");
+            sendToAll("GAME_STARTED");
             //The thread that handles the game starts
             new Thread(new HandleAGame(this)).start();
 

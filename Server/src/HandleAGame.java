@@ -114,8 +114,6 @@ public HandleAGame(Server server){
                 }
             }
 
-            System.out.println(solutionsChosen.get(0).getUser());
-
             //Sends the chosen solutions to all players
             server.sendToAll(problem);
             for(int i = 0; i < solutionsChosen.size(); i++) {
@@ -133,9 +131,12 @@ public HandleAGame(Server server){
             }
 
             //Print a scoreboard
-            server.sendToAll("Scoreboard:");
             for(int i = 0; i < users.size(); i++){
-                server.sendToAll(users.get(i).getUsername() + ": " + users.get(i).getPoints());
+                try {
+                    users.get(i).sendScoreboard();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             //Give the players new solution cards
@@ -171,9 +172,6 @@ public HandleAGame(Server server){
                 zhar = 0;
             }
 
-
         }
     }
-
-
 }
