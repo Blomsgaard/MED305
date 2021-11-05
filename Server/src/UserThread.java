@@ -148,6 +148,7 @@ public class UserThread extends Thread implements java.io.Serializable{
     public void sendScoreboard() throws IOException {
 
         dataToUser = new DataOutputStream(clientSocket.getOutputStream());
+
         sendMessage("Scoreboard: ");
         for(int i = 0; i < server.getUsers().size(); i++){
             dataToUser.writeUTF(server.getUsers().get(i).getUsername() + ": " + server.getUsers().get(i).getPoints());

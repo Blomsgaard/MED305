@@ -12,8 +12,11 @@ private Server server;
 private int solutionTopCard = 0;
 private int problemTopCard = 0;
 
-private int zhar;
+private int pharaoh;
 private boolean game;
+private boolean outOfBoundsCheck = true;
+private int solutionChosen;
+private int solutionWinner;
 private DataInputStream dataFromUser;
 private DataOutputStream dataToUser;
 
@@ -26,7 +29,7 @@ public HandleAGame(Server server){
     public void run() {
         users = server.getUsers();
         game = true;
-        zhar = 0;
+        pharaoh = 0;
 
         //Creates a deck of solution cards and adds them in an arraylist
         ArrayList<SolutionCard> solutionDeck = new ArrayList<>();
@@ -71,21 +74,20 @@ public HandleAGame(Server server){
 
                 for(int i = 0; i < users.size(); i++){
                 //The problem is printed to the users who must find a solution
-                    if (i != zhar ) {
-
-
+                    if (i != pharaoh ) {
 
                         users.get(i).sendMessage("Choose a fitting answer to the problem below:");
                         users.get(i).sendMessage(problem);
+
                         users.get(i).sendMessage("Pick the best solution by its number:");
                             for(int j = 0; j < users.get(i).getUserHand().size(); j++){
                             users.get(i).sendMessage(j + ": " + users.get(i).getUserHand().get(j).toString());
                         }
                     }
-                //The problem is presented to the zhar to read it out loud
+                //The problem is presented to the pharaoh to read it out loud
                     else {
-                        users.get(zhar).sendMessage("You are the zhar!");
-                        users.get(zhar).sendMessage(problem);
+                        users.get(pharaoh).sendMessage("You are the pharaoh!");
+                        users.get(pharaoh).sendMessage(problem);
 
                      }
                 }
@@ -94,18 +96,22 @@ public HandleAGame(Server server){
 
             while(goFurther) {
                 //For every user that must choose a solution, the server wait to get the index value of that solution,
-                //and adds them in a temp array, so they can be viewed by the zhar
+                //and adds them in a temp array, so they can be viewed by the pharaoh
                 for (int i = 0; i < users.size(); i++) {
-                    if (i != zhar) {
+                    if (i != pharaoh) {
                         try {
-                            //Wait for the client to send the index value for the card chosen
-                            int solutionChosen = users.get(i).receiveInt();
-
-                            // if the value from the user isn't between 0-4 (the amount of cards)
-                            if(users.get(i).receiveInt() > 4){
-                                System.out.println("Please enter a value ranging from 0-4");
+                            outOfBoundsCheck = true;
+                            while(outOfBoundsCheck) {
+                                //Wait for the client to send the index value for the card chosen
+                                solutionChosen = users.get(i).receiveInt();
+                                // if the value from the user isn't between 0-4 (the amount of cards)
+                                if (solutionChosen > 4) {
+                                    users.get(i).sendMessage("Please enter a value ranging from 0-4");
+                                }
+                                else{
+                                    outOfBoundsCheck = false;
+                                }
                             }
-
                             SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
                             solutionsChosen.add(new SolutionChosen(solution, i));
 
@@ -121,13 +127,16 @@ public HandleAGame(Server server){
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        catch (IndexOutOfBoundsException e){
+
+                        }
                     }
                 }
             }
 
             //The problems chosen are displayed to all players
             for(int i = 0; i < users.size(); i++){
-                if (i != zhar ) {
+                if (i != pharaoh ) {
                     users.get(i).sendMessage("Wait for the Pharaoh to pick the winner");
                     users.get(i).sendMessage(problem);
 
@@ -135,23 +144,28 @@ public HandleAGame(Server server){
                         users.get(i).sendMessage(solutionsChosen.get(j).getSolutionCard().toString());
                     }
                 }
-                //The problem is presented to the zhar to read it out loud
+                //The problem is presented to the pharaoh to read it out loud
                 else {
-                    users.get(zhar).sendMessage("Chose the best solution to the problem");
+                    users.get(pharaoh).sendMessage("Chose the best solution to the problem");
                     for(int j = 0; j < solutionsChosen.size(); j++) {
-                        users.get(zhar).sendMessage(j + ": " + solutionsChosen.get(j).getSolutionCard().toString());
+                        users.get(pharaoh).sendMessage(j + ": " + solutionsChosen.get(j).getSolutionCard().toString());
                     }
-                    users.get(zhar).sendMessage("Press the number matching the best solution");
+                    users.get(pharaoh).sendMessage("Press the number matching the best solution");
                 }
             }
 
             try {
-                //Waits for the zhar to choose a winner and receives the chosen cards index value
-                int solutionWinner = users.get(zhar).receiveInt();
-
-                // if the value from the zhar isn't between 0 and the amount of players
-                if(users.get(zhar).receiveInt() > users.size()){
-                    System.out.println("Please enter a value ranging from 0 - " + users.size());
+                outOfBoundsCheck = true;
+                while(outOfBoundsCheck) {
+                    //Waits for the pharaoh to choose a winner and receives the chosen cards index value
+                    solutionWinner = users.get(pharaoh).receiveInt();
+                    // if the value from the pharaoh isn't between 0 and the amount of players
+                    if(solutionWinner > users.size()-1){
+                        users.get(pharaoh).sendMessage("Please enter a value ranging from 0-" + (solutionsChosen.size()-1));
+                    }
+                    else{
+                        outOfBoundsCheck = false;
+                    }
                 }
 
                 server.sendToAll("The winner is: ");
@@ -173,7 +187,7 @@ public HandleAGame(Server server){
             //Give the players new solution cards
             for(int i = 0; i < users.size(); i++){
                 //boolean stopPrint;
-                if (i != zhar){
+                if (i != pharaoh){
                     users.get(i).addCard(solutionDeck.get(solutionTopCard));
                     solutionTopCard++;
                     //If the last card of the deck is drawn, the deck is shuffled and a new top card is drawn
@@ -202,15 +216,15 @@ public HandleAGame(Server server){
                     game = false;
                 }
             }
-            //A new problemCard is chosen and a new zhar is assigned
+            //A new problemCard is chosen and a new pharaoh is assigned
             problemTopCard++;
 
-            //A new zhar is chosen
-            if(zhar < users.size() - 1) {
-                zhar++;
+            //A new pharaoh is chosen
+            if(pharaoh < users.size() - 1) {
+                pharaoh++;
             }
             else{
-                zhar = 0;
+                pharaoh = 0;
             }
 
         }
