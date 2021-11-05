@@ -36,7 +36,6 @@ public class UserThread extends Thread implements java.io.Serializable{
             boolean test = true;
 
             while(connected){
-                
                 while(readyCheck){
                     boolean start = dataFromUser.readBoolean();
                     if(start){
@@ -81,6 +80,10 @@ public class UserThread extends Thread implements java.io.Serializable{
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String name){
+        this.username = name;
     }
 
     public ArrayList<SolutionCard> getUserHand() {
@@ -132,19 +135,22 @@ public class UserThread extends Thread implements java.io.Serializable{
             for(int i = 0; i < server.getUsers().size(); i++){
                 playerNames.add(server.getUsers().get(i).getUsername());
             }
-
-            //Sents a certain message so the client now that it receives a playerlist
-            sendMessage("PLAYER_LIST");
-            //Sents the size of the playerlist so the client now how many players must be added
-            dataToUser.writeInt(playerNames.size());
-
             //Sents all the playernames
             for(int i = 0; i < playerNames.size(); i++){
-             dataToUser.writeUTF(playerNames.get(i));
+             dataToUser.writeUTF("\t" + playerNames.get(i));
             }
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendScoreboard() throws IOException {
+
+        dataToUser = new DataOutputStream(clientSocket.getOutputStream());
+        sendMessage("Scoreboard:");
+        for(int i = 0; i < server.getUsers().size(); i++){
+            dataToUser.writeUTF(server.getUsers().get(i).getUsername() + ": " + server.getUsers().get(i).getPoints());
         }
     }
 }
