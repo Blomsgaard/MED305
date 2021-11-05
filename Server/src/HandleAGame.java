@@ -169,10 +169,9 @@ public HandleAGame(Server server){
                 }
 
                 server.sendToAll("The winner is: ");
-                Thread.sleep(3000);
                 server.sendToAll(solutionsChosen.get(solutionWinner).getUser() + ": " + solutionsChosen.get(solutionWinner).getSolutionCard().toString());
                 users.get(solutionsChosen.get(solutionWinner).getUser()).increasePoints();
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
