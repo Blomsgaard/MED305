@@ -92,7 +92,7 @@ public HandleAGame(Server server){
                             int solutionChosen = users.get(i).receiveInt();
 
                             // if the value from the user isn't between 0-4 (the amount of cards)
-                            if(users.get(i).receiveInt() > 4){
+                            if(solutionChosen > 4){
                                 System.out.println("Please enter a value ranging from 0-4");
                             }
 
@@ -126,8 +126,8 @@ public HandleAGame(Server server){
                 int solutionWinner = users.get(zhar).receiveInt();
 
                 // if the value from the zhar isn't between 0 and the amount of players
-                if(users.get(zhar).receiveInt() > users.size()){
-                    System.out.println("Please enter a value ranging from 0 - " + users.size());
+                if(solutionWinner > users.size()-1){
+                    System.out.println("Please enter a value ranging from 0-" + users.size());
                 }
 
                 server.sendToAll("The winner is:");
