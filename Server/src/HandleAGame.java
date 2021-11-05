@@ -67,13 +67,12 @@ public HandleAGame(Server server){
                 //The problem is printed to the users who must find a solution
                     if (i != zhar ) {
 
-
+/*
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                        }
-
+                        }*/
                         users.get(i).sendMessage("Choose a fitting answer to the problem below:");
                         users.get(i).sendMessage(problem);
 
@@ -113,7 +112,7 @@ public HandleAGame(Server server){
 
                             // if the value from the user isn't between 0-4 (the amount of cards)
                             if(solutionChosen > 4){
-                                System.out.println("Please enter a value ranging from 0-4");
+                                users.get(i).sendMessage("Please enter a value ranging from 0-4");
                             }
 
                             SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
@@ -161,7 +160,7 @@ public HandleAGame(Server server){
 
                 // if the value from the zhar isn't between 0 and the amount of players
                 if(solutionWinner > users.size()-1){
-                    System.out.println("Please enter a value ranging from 0-" + users.size());
+                    users.get(zhar).sendMessage("Please enter a value ranging from 0-" + users.size());
                 }
 
                 server.sendToAll("The winner is: ");
