@@ -77,12 +77,6 @@ public HandleAGame(Server server){
 
                         users.get(i).sendMessage("Choose a fitting answer to the problem below:");
                         users.get(i).sendMessage(problem);
-
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         users.get(i).sendMessage("Pick the best solution by its number:");
                             for(int j = 0; j < users.get(i).getUserHand().size(); j++){
                             users.get(i).sendMessage(j + ": " + users.get(i).getUserHand().get(j).toString());
@@ -161,10 +155,9 @@ public HandleAGame(Server server){
                 }
 
                 server.sendToAll("The winner is: ");
-                Thread.sleep(3000);
                 server.sendToAll(solutionsChosen.get(solutionWinner).getUser() + ": " + solutionsChosen.get(solutionWinner).getSolutionCard().toString());
                 users.get(solutionsChosen.get(solutionWinner).getUser()).increasePoints();
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
