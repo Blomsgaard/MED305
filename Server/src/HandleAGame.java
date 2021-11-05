@@ -90,8 +90,15 @@ public HandleAGame(Server server){
                         try {
                             //Wait for the client to send the index value for the card chosen
                             int solutionChosen = users.get(i).receiveInt();
+
+                            // if the value from the user isn't between 0-4 (the amount of cards)
+                            if(users.get(i).receiveInt() > 4){
+                                System.out.println("Please enter a value ranging from 0-4");
+                            }
+
                             SolutionCard solution = users.get(i).getUserHand().get(solutionChosen);
                             solutionsChosen.add(new SolutionChosen(solution, i));
+
 
                             //Removes the card chosen from the player hand
                             users.get(i).removeCard(solutionChosen);
@@ -117,6 +124,12 @@ public HandleAGame(Server server){
             try {
                 //Waits for the zhar to choose a winner and receives the chosen cards index value
                 int solutionWinner = users.get(zhar).receiveInt();
+
+                // if the value from the zhar isn't between 0 and the amount of players
+                if(users.get(zhar).receiveInt() > users.size()){
+                    System.out.println("Please enter a value ranging from 0 - " + users.size());
+                }
+
                 server.sendToAll("The winner is:");
                 server.sendToAll(solutionsChosen.get(solutionWinner).getSolutionCard().toString());
                 users.get(solutionsChosen.get(solutionWinner).getUser()).increasePoints();
