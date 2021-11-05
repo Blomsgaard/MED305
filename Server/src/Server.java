@@ -53,12 +53,13 @@ public class Server {
                     System.out.println("List of player names:");
 
                     //Prints all the player names and sends them to all users as well
-                    dataToUser.writeUTF("List of player names:");
+                    sendToAll(users.size() + " players have joined");
+                    sendToAll("List of player names:");
                     for(int i = 0; i < users.size(); i++){
                         System.out.println(users.get(i).getUsername());
                         users.get(i).sendPlayerNames();
                     }
-                    dataToUser.writeUTF("");
+                    sendToAll("");
                 }
 
 
@@ -83,17 +84,26 @@ public class Server {
     public void startGame(){
         boolean lobby = false;
         boolean start = true;
-        
+        int playersReady = 0;
+
         // Used to check if the users are ready
         for (int i = 0; i < users.size(); i++) {
+
 			if (users.get(i).isReadyCheck() == true) {
 				start = false;
+
 			}
+            else {
+                playersReady++;
+            }
+
 		}
+
+        sendToAll(playersReady + "/" + users.size() + " players are ready" + "\n");
 
         //The game starts if all players are ready
         if(start){
-            sendToAll("GAME_STARTED");
+            sendToAll("Game has started");
             //The thread that handles the game starts
             new Thread(new HandleAGame(this)).start();
 

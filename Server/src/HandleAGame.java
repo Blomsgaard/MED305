@@ -54,12 +54,6 @@ public HandleAGame(Server server){
             }
             users.get(i).setUserHand(userHand);
             System.out.println(users.get(i).getUserHand());
-
-            try {
-                users.get(i).sendUserHand();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         //Runs the game in this loop. It continues until a player has received 5 points
