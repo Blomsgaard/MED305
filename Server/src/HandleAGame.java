@@ -59,27 +59,47 @@ public HandleAGame(Server server){
         //Runs the game in this loop. It continues until a player has received 5 points
         while(game){
 
-            String problem = problemDeck.get(problemTopCard).toString();
-            ArrayList<SolutionChosen> solutionsChosen = new ArrayList<>();
-            boolean goFurther = true;
+                String problem = problemDeck.get(problemTopCard).toString();
+                ArrayList<SolutionChosen> solutionsChosen = new ArrayList<>();
+                boolean goFurther = true;
 
-            for(int i = 0; i < users.size(); i++){
+                for(int i = 0; i < users.size(); i++){
                 //The problem is printed to the users who must find a solution
-                if (i != zhar ) {
-                    users.get(i).sendMessage("Choose a fitting answer to the problem below:");
-                    users.get(i).sendMessage(problem);
+                    if (i != zhar ) {
 
-                    users.get(i).sendMessage("Pick the best solution by its number:");
-                    for(int j = 0; j < users.get(i).getUserHand().size(); j++){
-                        users.get(i).sendMessage(j + ": " + users.get(i).getUserHand().get(j).toString());
+
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        users.get(i).sendMessage("Choose a fitting answer to the problem below:");
+                        users.get(i).sendMessage(problem);
+
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        users.get(i).sendMessage("Pick the best solution by its number:");
+                            for(int j = 0; j < users.get(i).getUserHand().size(); j++){
+                            users.get(i).sendMessage(j + ": " + users.get(i).getUserHand().get(j).toString());
+                        }
                     }
-                }
                 //The problem is presented to the zhar to read it out loud
-                else {
-                    users.get(zhar).sendMessage("You are the zhar!");
-                    users.get(zhar).sendMessage(problem);
+                    else {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        users.get(zhar).sendMessage("You are the zhar!");
+                        users.get(zhar).sendMessage(problem);
+
+                     }
                 }
-            }
+
 
 
             while(goFurther) {
@@ -115,10 +135,24 @@ public HandleAGame(Server server){
                 }
             }
 
-            //Sends the chosen solutions to all players
-            server.sendToAll(problem);
-            for(int i = 0; i < solutionsChosen.size(); i++) {
-                server.sendToAll(i + ": " + solutionsChosen.get(i).getSolutionCard().toString());
+            //The problems chosen are displayed to all players
+            for(int i = 0; i < users.size(); i++){
+                if (i != zhar ) {
+                    users.get(i).sendMessage("Wait for the Pharaoh to pick the winner");
+                    users.get(i).sendMessage(problem);
+
+                    for(int j = 0; j < solutionsChosen.size(); j++){
+                        users.get(i).sendMessage(solutionsChosen.get(j).getSolutionCard().toString());
+                    }
+                }
+                //The problem is presented to the zhar to read it out loud
+                else {
+                    users.get(zhar).sendMessage("Chose the best solution to the problem");
+                    for(int j = 0; j < solutionsChosen.size(); j++) {
+                        users.get(zhar).sendMessage(j + ": " + solutionsChosen.get(j).getSolutionCard().toString());
+                    }
+                    users.get(zhar).sendMessage("Press the number matching the best solution");
+                }
             }
 
             try {
@@ -130,10 +164,11 @@ public HandleAGame(Server server){
                     System.out.println("Please enter a value ranging from 0-" + users.size());
                 }
 
-                server.sendToAll("The winner is:");
+                server.sendToAll("The winner is: ");
+                Thread.sleep(3000);
                 server.sendToAll(solutionsChosen.get(solutionWinner).getUser() + ": " + solutionsChosen.get(solutionWinner).getSolutionCard().toString());
                 users.get(solutionsChosen.get(solutionWinner).getUser()).increasePoints();
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
 
